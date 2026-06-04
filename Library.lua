@@ -1912,89 +1912,155 @@ local Library do
                     ApplyStrokeMode = Enum.ApplyStrokeMode.Border
                 }):AddToTheme({Color = "Border"})
                 
-                Items["Background"] = Instances:Create("Frame", {
-                    Parent = Items["Title"].Instance,
-                    Name = "\0",
-                    AnchorPoint = Vector2New(0, 0.5),
-                    Position = UDim2New(0, 12, 0.5, 0),
-                    BorderColor3 = FromRGB(0, 0, 0),
-                    Size = UDim2New(0, 40, 0, 40),
-                    BorderSizePixel = 0,
-                    BackgroundColor3 = FromRGB(207, 207, 207)
-                })
-                
-                Instances:Create("UICorner", {
-                    Parent = Items["Background"].Instance,
-                    Name = "\0",
-                    CornerRadius = UDimNew(0, 7)
-                })
-                
-                Instances:Create("UIStroke", {
-                    Parent = Items["Background"].Instance,
-                    Name = "\0",
-                    Color = FromRGB(30, 33, 33),
-                    ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-                }):AddToTheme({Color = "Border"})
-                
-                Items["Text"] = Instances:Create("TextLabel", {
-                    Parent = Items["Background"].Instance,
-                    Name = "\0",
-                    FontFace = Library.Font,
-                    TextColor3 = FromRGB(0, 0, 0),
-                    BorderColor3 = FromRGB(0, 0, 0),
-                    Text = FirstLetterOfName,
-                    AnchorPoint = Vector2New(0.5, 0.5),
-                    BackgroundTransparency = 1,
-                    Position = UDim2New(0.5, 0, 0.5, 0),
-                    Size = UDim2New(1, -10, 1, -10),
-                    BorderSizePixel = 0,
-                    TextSize = 22,
-                    BackgroundColor3 = FromRGB(255, 255, 255)
-                })
-                
-                Items["RealTitle"] = Instances:Create("TextLabel", {
-                    Parent = Items["Title"].Instance,
-                    Name = "\0",
-                    FontFace = Library.Font,
-                    TextColor3 = FromRGB(255, 255, 255),
-                    BorderColor3 = FromRGB(0, 0, 0),
-                    Text = Window.Name,
-                    Size = UDim2New(0, 0, 0, 15),
-                    BackgroundTransparency = 1,
-                    Position = UDim2New(0, 65, 0, 14),
-                    BorderSizePixel = 0,
-                    AutomaticSize = Enum.AutomaticSize.X,
-                    TextSize = 14,
-                    BackgroundColor3 = FromRGB(255, 255, 255)
-                })  
-                
-                Items["Game"] = Instances:Create("TextLabel", {
-                    Parent = Items["Title"].Instance,
-                    Name = "\0",
-                    FontFace = Library.Font,
-                    TextColor3 = FromRGB(255, 255, 255),
-                    TextTransparency = 0.5,
-                    Text = Window.SubTitle,
-                    Size = UDim2New(0, 0, 0, 15),
-                    BorderSizePixel = 0,
-                    BackgroundTransparency = 1,
-                    Position = UDim2New(0, 65, 0, 30),
-                    BorderColor3 = FromRGB(0, 0, 0),
-                    AutomaticSize = Enum.AutomaticSize.X,
-                    TextSize = 14,
-                    BackgroundColor3 = FromRGB(255, 255, 255)
-                })
-                
-                Items["Pages"] = Instances:Create("Frame", {
-                    Parent = Items["Side"].Instance,
-                    Name = "\0",
-                    BackgroundTransparency = 1,
-                    Position = UDim2New(0, 0, 0, 75),
-                    BorderColor3 = FromRGB(0, 0, 0),
-                    Size = UDim2New(1, 0, 1, -80),
-                    BorderSizePixel = 0,
-                    BackgroundColor3 = FromRGB(255, 255, 255)
-                })
+              -- ВЕСЬ БЛОК ЗАГОЛОВКА (вместо старого квадрата с буквой и текстов)
+
+if Window.Logo then
+    -- Если Logo это картинка (rbxassetid://...)
+    if type(Window.Logo) == "string" and (Window.Logo:match("rbxasset") or Window.Logo:match("http")) then
+        -- Картинка на всю ширину
+        Items["LogoImage"] = Instances:Create("ImageLabel", {
+            Parent = Items["Title"].Instance,
+            Name = "\0",
+            AnchorPoint = Vector2New(0, 0.5),
+            Position = UDim2New(0, 12, 0.5, 0),
+            BorderColor3 = FromRGB(0, 0, 0),
+            Size = UDim2New(1, -24, 0, 45),
+            BorderSizePixel = 0,
+            BackgroundTransparency = 1,
+            Image = Window.Logo,
+            ScaleType = Enum.ScaleType.Fit,
+            BackgroundColor3 = FromRGB(255, 255, 255)
+        })
+        
+        -- Подпись под картинкой (небольшой текст)
+        if Window.SubLogo then
+            Items["SubLogoText"] = Instances:Create("TextLabel", {
+                Parent = Items["Title"].Instance,
+                Name = "\0",
+                FontFace = Library.Font,
+                TextColor3 = FromRGB(255, 255, 255),
+                TextTransparency = 0.5,
+                BorderColor3 = FromRGB(0, 0, 0),
+                Text = Window.SubLogo,
+                AnchorPoint = Vector2New(0, 1),
+                BackgroundTransparency = 1,
+                Position = UDim2New(0, 12, 1, -8),
+                Size = UDim2New(0, 0, 0, 14),
+                BorderSizePixel = 0,
+                AutomaticSize = Enum.AutomaticSize.X,
+                TextSize = 11,
+                BackgroundColor3 = FromRGB(255, 255, 255)
+            })
+        end
+        
+    else
+        -- Текстовая надпись (большая)
+        Items["BigTitle"] = Instances:Create("TextLabel", {
+            Parent = Items["Title"].Instance,
+            Name = "\0",
+            FontFace = Library.Font,
+            TextColor3 = FromRGB(255, 255, 255),
+            BorderColor3 = FromRGB(0, 0, 0),
+            Text = Window.Logo,
+            AnchorPoint = Vector2New(0, 0.5),
+            BackgroundTransparency = 1,
+            Position = UDim2New(0, 12, 0.5, 0),
+            Size = UDim2New(1, -24, 0, 35),
+            BorderSizePixel = 0,
+            TextSize = 28,
+            TextXAlignment = Enum.TextXAlignment.Left,
+            BackgroundColor3 = FromRGB(255, 255, 255)
+        })
+        
+        -- Над-надпись (чуть ниже основной)
+        if Window.SubLogo then
+            Items["SubLogoText"] = Instances:Create("TextLabel", {
+                Parent = Items["Title"].Instance,
+                Name = "\0",
+                FontFace = Library.Font,
+                TextColor3 = FromRGB(255, 255, 255),
+                TextTransparency = 0.5,
+                BorderColor3 = FromRGB(0, 0, 0),
+                Text = Window.SubLogo,
+                AnchorPoint = Vector2New(0, 1),
+                BackgroundTransparency = 1,
+                Position = UDim2New(0, 12, 1, -8),
+                Size = UDim2New(0, 0, 0, 14),
+                BorderSizePixel = 0,
+                AutomaticSize = Enum.AutomaticSize.X,
+                TextSize = 11,
+                BackgroundColor3 = FromRGB(255, 255, 255)
+            })
+        end
+    end
+else
+    -- Старое поведение (серый квадрат с буквой) - если нужно
+    Items["Background"] = Instances:Create("Frame", {
+        Parent = Items["Title"].Instance,
+        Name = "\0",
+        AnchorPoint = Vector2New(0, 0.5),
+        Position = UDim2New(0, 12, 0.5, 0),
+        BorderColor3 = FromRGB(0, 0, 0),
+        Size = UDim2New(0, 40, 0, 40),
+        BorderSizePixel = 0,
+        BackgroundColor3 = FromRGB(207, 207, 207)
+    })
+    
+    Instances:Create("UICorner", {
+        Parent = Items["Background"].Instance,
+        Name = "\0",
+        CornerRadius = UDimNew(0, 7)
+    })
+    
+    Items["Text"] = Instances:Create("TextLabel", {
+        Parent = Items["Background"].Instance,
+        Name = "\0",
+        FontFace = Library.Font,
+        TextColor3 = FromRGB(0, 0, 0),
+        BorderColor3 = FromRGB(0, 0, 0),
+        Text = StringSub(Window.Name, 1, 1),
+        AnchorPoint = Vector2New(0.5, 0.5),
+        BackgroundTransparency = 1,
+        Position = UDim2New(0.5, 0, 0.5, 0),
+        Size = UDim2New(1, -10, 1, -10),
+        BorderSizePixel = 0,
+        TextSize = 22,
+        BackgroundColor3 = FromRGB(255, 255, 255)
+    })
+    
+    Items["RealTitle"] = Instances:Create("TextLabel", {
+        Parent = Items["Title"].Instance,
+        Name = "\0",
+        FontFace = Library.Font,
+        TextColor3 = FromRGB(255, 255, 255),
+        BorderColor3 = FromRGB(0, 0, 0),
+        Text = Window.Name,
+        Size = UDim2New(0, 0, 0, 15),
+        BackgroundTransparency = 1,
+        Position = UDim2New(0, 65, 0, 14),
+        BorderSizePixel = 0,
+        AutomaticSize = Enum.AutomaticSize.X,
+        TextSize = 14,
+        BackgroundColor3 = FromRGB(255, 255, 255)
+    })
+    
+    Items["Game"] = Instances:Create("TextLabel", {
+        Parent = Items["Title"].Instance,
+        Name = "\0",
+        FontFace = Library.Font,
+        TextColor3 = FromRGB(255, 255, 255),
+        TextTransparency = 0.5,
+        Text = Window.SubTitle,
+        Size = UDim2New(0, 0, 0, 15),
+        BorderSizePixel = 0,
+        BackgroundTransparency = 1,
+        Position = UDim2New(0, 65, 0, 30),
+        BorderColor3 = FromRGB(0, 0, 0),
+        AutomaticSize = Enum.AutomaticSize.X,
+        TextSize = 14,
+        BackgroundColor3 = FromRGB(255, 255, 255)
+    })
+												end
                 
                 Instances:Create("UIListLayout", {
                     Parent = Items["Pages"].Instance,
@@ -3948,7 +4014,10 @@ local Library do
     end
 end
 
-local Window = Library:Window({Name = "Balright"})
+local Window = Library:Window({
+Name = "Balright"
+Logo = "Sub"
+})
 
 Window:Category("penis")
 local CombatPage = Window:Page({Name = "Page", Icon = "136879043989014"})
